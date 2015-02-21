@@ -6,16 +6,22 @@ app.controller('MainCtrl', [
 		$scope.posts = [];
 
 		$scope.getTimes = function() {
-			$.getJSON("http://api.sunrise-sunset.org/json?lat=36.7201600&lng=-4.4203400", function(data) {
-    	// Get the element with id summary and set the inner text to the result.
-    	data = data.addHeader("Access-Control-Allow-Origin", "*");
-    	console.log(data);
-			});
 
 			var address = $scope.address + ", " + $scope.city + ", " + $scope.state;
 			address = address.toString();
 
-			console.log(address);
+			$.ajax({
+    		crossOrigin: true,
+    		url: "http://api.sunrise-sunset.org/json?lat=36.7201600&lng=-4.4203400&date=today",
+    		headers: {
+                "Accept" : "application/json; charset=utf-8",
+                "Content-Type": "application/json; charset=utf-8"
+            },
+    		success: function(data) {
+    			var json = JSON.parse(data);
+    			console.log(data);
+    		}
+			});
 
 
 			var geocoder = new google.maps.Geocoder();
@@ -24,6 +30,7 @@ app.controller('MainCtrl', [
   		{
       // do something with the geocoded result
       //
+
       console.log(results);
 			console.log(results[0].geometry.location.lat());
       console.log(results[0].geometry.location.lat());
